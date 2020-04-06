@@ -1,0 +1,10 @@
+<application>
+  <component name="FileTypeManager" version="17">
+    <extensionMap>
+      <mapping ext="mp4" type="Native" />
+      <mapping ext="mp3" type="Native" />
+      <mapping pattern="error_log" type="PLAIN_TEXT" />
+      <mapping pattern=".htpasswd" type="PLAIN_TEXT" />
+    </extensionMap>
+  </component>
+</application>

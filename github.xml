@@ -1,0 +1,11 @@
+<application>
+  <component name="GithubAccounts">
+    <account id="c8e9f18c-faaa-41fd-bf4a-0f0bd8341994" name="samuelgfeller@bluewin.ch">
+      <server host="github.com" />
+    </account>
+  </component>
+  <component name="GithubSettings">
+    <option name="LOGIN" value="samuelgfeller@bluewin.ch" />
+    <option name="AUTH_TYPE" value="BASIC" />
+  </component>
+</application>

@@ -1,0 +1,41 @@
+<application>
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="d6956e21-16b3-4863-942c-c9962f74e84f" name="samuel-gfeller" url="http://194.150.248.27">
+        <fileTransfer host="194.150.248.27" port="22" rootFolder="/home/samuelgfeller/" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="2844a436-5d9f-482c-8b65-b469bd81b45e" name="driveBackup" url="http://localhost">
+        <fileTransfer port="0" mountedRoot="C:\Users\samue\Google Drive\Eigene Dateien\Programmieren\htdocs" accessType="MOUNT" />
+      </webServer>
+      <webServer id="b43acbb1-a847-49d7-9bbd-afd9aac438ee" name="bs01" url="https://">
+        <fileTransfer host="bs01.wmc.ch" port="22" rootFolder="/var/www/" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions controlEncoding="utf-8" dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="d0d56e7b-0036-46f1-91f5-ec6b47862c58" name="psychoanalyse-basel" url="http://login-2.hoststar.ch">
+        <fileTransfer host="login-2.hoststar.ch" port="21" accessType="FTPS">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="d94f9203-de07-4292-90e6-b2ff0fa654a8" name="home-server-samuel" url="http://samuelgfeller.hopto.org">
+        <fileTransfer host="samuelgfeller.hopto.org" port="22" privateKey="C:\Users\samue\Documents\Neuer Ordner\myservKey.ppk" rootFolder="/var/www" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</application>
