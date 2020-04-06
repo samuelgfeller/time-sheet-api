@@ -11,8 +11,8 @@ class TimeSheetService
 {
 
     private TimeSheetRepository $timeSheetRepository;
-    private $userService;
-    protected $timeSheetValidation;
+    private UserService $userService;
+    protected TimeSheetValidation $timeSheetValidation;
 
     public function __construct(
         TimeSheetRepository $timeSheetRepository,
@@ -24,31 +24,19 @@ class TimeSheetService
         $this->timeSheetValidation = $timeSheetValidation;
     }
 
-    public function findAllTimeSheets()
+    /**
+     * Return all recorded times
+     *
+     * @return array
+     */
+    public function findAllTimeSheets(): array
     {
         $allTimeSheets = $this->timeSheetRepository->findAllTimeSheets();
         return $this->populateTimeSheetsArrayWithUser($allTimeSheets);
     }
 
-    public function findTimeSheet($id): array
-    {
-        return $this->timeSheetRepository->findTimeSheetById($id);
-    }
-
     /**
-     * Return all timeSheets which are linked to the given user
-     *
-     * @param $userId
-     * @return array
-     */
-    public function findAllTimeSheetsFromUser($userId): array
-    {
-        $timeSheets = $this->timeSheetRepository->findAllTimeSheetsByUserId($userId);
-        return $this->populateTimeSheetsArrayWithUser($timeSheets);
-    }
-
-    /**
-     * Add user infos to timeSheet array
+     * Add user infos to time sheet array
      *
      * @param $timeSheets
      * @return array
@@ -60,7 +48,7 @@ class TimeSheetService
         foreach ($timeSheets as $timeSheet) {
             // Get user information connected to timeSheet
             $user = $this->userService->findUser($timeSheet['user_id']);
-            // If user was deleted but timeSheet not
+            // If user was deleted but time not, time should not be shown and also technically deleted
             if (isset($user['name'])) {
                 $timeSheet['user_name'] = $user['name'];
                 $timeSheetsWithUser[] = $timeSheet;
@@ -77,21 +65,7 @@ class TimeSheetService
      */
     public function createTimeSheet(TimeSheet $timeSheet): string
     {
-        $this->timeSheetValidation->validateTimeSheetCreationOrUpdate($timeSheet);
+        $this->timeSheetValidation->validateTimeSheetCreation($timeSheet);
         return $this->timeSheetRepository->insertTimeSheet($timeSheet->toArray());
     }
-
-
-    public function updateTimeSheet(TimeSheet $timeSheet): bool
-    {
-         $this->timeSheetValidation->validateTimeSheetCreationOrUpdate($timeSheet);
-        return $this->timeSheetRepository->updateTimeSheet($timeSheet->toArray(), $timeSheet->getId());
-    }
-
-    public function deleteTimeSheet($id): bool
-    {
-        return $this->timeSheetRepository->deleteTimeSheet($id);
-    }
-
-
 }
