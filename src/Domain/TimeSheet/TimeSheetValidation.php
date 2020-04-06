@@ -28,8 +28,9 @@ class TimeSheetValidation extends AppValidation
      *
      * @param TimeSheet $timeSheet
      */
-    public function validatePostCreationOrUpdate(TimeSheet $timeSheet): void
+    public function validateTimeSheetCreation(TimeSheet $timeSheet): void
     {
+        // todo in "Anweisungen über Zeit Start und Stopp von Frontend verarbeiten, in Datenbank schreiben"
         $validationResult = new ValidationResult('There is something in the timeSheet data which couldn\'t be validated');
         // In case message gets validated in other function
         $required = true;
