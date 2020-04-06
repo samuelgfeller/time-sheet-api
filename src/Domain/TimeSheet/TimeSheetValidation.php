@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Domain\Post;
+namespace App\Domain\TimeSheet;
 
+use App\Domain\TimeSheet\TimeSheet;
 use App\Domain\Validation\AppValidation;
 use App\Domain\Validation\ValidationResult;
 use Psr\Log\LoggerInterface;
@@ -9,7 +10,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Class UserValidation
  */
-class PostValidation extends AppValidation
+class TimeSheetValidation extends AppValidation
 {
 
     /**
@@ -23,21 +24,21 @@ class PostValidation extends AppValidation
     }
 
     /**
-     * Validate post creation or update since they are the same
+     * Validate timeSheet creation or update since they are the same
      *
-     * @param Post $post
+     * @param TimeSheet $timeSheet
      */
-    public function validatePostCreationOrUpdate(Post $post): void
+    public function validatePostCreationOrUpdate(TimeSheet $timeSheet): void
     {
-        $validationResult = new ValidationResult('There is something in the post data which couldn\'t be validated');
+        $validationResult = new ValidationResult('There is something in the timeSheet data which couldn\'t be validated');
         // In case message gets validated in other function
         $required = true;
 
         // Validate message
-        if (null !== $post->getMessage()) {
+        if (null !== $timeSheet->getMessage()) {
 
-            $this->validateLengthMax($post->getMessage(), 'message', $validationResult, 500);
-            $this->validateLengthMin($post->getMessage(), 'message', $validationResult, 4);
+            $this->validateLengthMax($timeSheet->getMessage(), 'message', $validationResult, 500);
+            $this->validateLengthMin($timeSheet->getMessage(), 'message', $validationResult, 4);
         } elseif (true === $required) {
             // If it is null but required, the user input is faulty so bad request 400 return status is sent
             $validationResult->setIsBadRequest(true, 'message', 'Message is required but not given');

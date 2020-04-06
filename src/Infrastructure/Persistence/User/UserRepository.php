@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\User;
 
-use App\Domain\User\UserNotFoundException;
 use App\Infrastructure\Persistence\DataManager;
 use App\Infrastructure\Persistence\Exceptions\PersistenceRecordNotFoundException;
 use Cake\Database\Connection;

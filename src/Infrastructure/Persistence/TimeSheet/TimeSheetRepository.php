@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Infrastructure\Persistence\Post;
+namespace App\Infrastructure\Persistence\TimeSheet;
 
 use App\Infrastructure\Persistence\DataManager;
 use App\Infrastructure\Persistence\Exceptions\PersistenceRecordNotFoundException;
 use Cake\Database\Connection;
 
-class PostRepository extends DataManager
+class TimeSheetRepository extends DataManager
 {
 
     public function __construct(Connection $conn = null)
     {
         parent::__construct($conn);
-        $this->table = 'post';
+        $this->table = 'time-sheet';
     }
 
     /**
@@ -21,7 +21,7 @@ class PostRepository extends DataManager
      *
      * @return array
      */
-    public function findAllPosts(): array
+    public function findAllTimeSheets(): array
     {
         return $this->findAll();
     }
@@ -33,7 +33,7 @@ class PostRepository extends DataManager
      * @param int $id
      * @return array
      */
-    public function findPostById(int $id): array
+    public function findTimeSheetById(int $id): array
     {
         return $this->findById($id);
     }
@@ -46,7 +46,7 @@ class PostRepository extends DataManager
      * @return array
      * @throws PersistenceRecordNotFoundException
      */
-    public function getPostById(int $id): array
+    public function getTimeSheetById(int $id): array
     {
         return $this->getById($id);
     }
@@ -57,7 +57,7 @@ class PostRepository extends DataManager
      * @param $userId
      * @return array
      */
-    public function findAllPostsByUserId(int $userId): array
+    public function findAllTimeSheetsByUserId(int $userId): array
     {
         return $this->findAllBy('user_id',$userId);
     }
@@ -68,7 +68,7 @@ class PostRepository extends DataManager
      * @param array $data
      * @return string lastInsertId
      */
-    public function insertPost(array $data): string {
+    public function insertTimeSheet(array $data): string {
         return $this->insert($data);
     }
     
@@ -78,7 +78,7 @@ class PostRepository extends DataManager
      * @param int $id
      * @return bool
      */
-    public function deletePost(int $id): bool {
+    public function deleteTimeSheet(int $id): bool {
         return $this->delete($id);
     }
     
@@ -90,7 +90,7 @@ class PostRepository extends DataManager
      * @param array $data
      * @return bool
      */
-    public function updatePost(array $data,int $id): bool {
+    public function updateTimeSheet(array $data,int $id): bool {
         return $this->update($data, $id);
     }
 }

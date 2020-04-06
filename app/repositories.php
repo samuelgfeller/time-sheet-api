@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Infrastructure\Persistence\Post\PostRepository;
+use App\Infrastructure\Persistence\TimeSheet\TimeSheetRepository;
 use App\Infrastructure\Persistence\User\UserRepository;
 use Cake\Database\Connection;
 use DI\ContainerBuilder;
@@ -21,9 +21,9 @@ return function (ContainerBuilder $containerBuilder) {
                 $pdo = $container->get(Connection::class);
                 return new UserRepository($pdo);
             },
-            PostRepository::class => function (ContainerInterface $container) {
+            TimeSheetRepository::class => function (ContainerInterface $container) {
                 $pdo = $container->get(Connection::class);
-                return new PostRepository($pdo);
+                return new TimeSheetRepository($pdo);
             },
 
         ]

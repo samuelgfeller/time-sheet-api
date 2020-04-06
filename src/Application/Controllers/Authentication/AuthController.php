@@ -45,7 +45,6 @@ class AuthController extends Controller
             return $this->respondValidationError($exception->getValidationResult(), $response);
         }
 
-        // Log user in
         if (null !== $insertId) {
             $this->logger->info('User "' . $userData['email'] . '" created');
 

@@ -1,24 +1,20 @@
 <?php
 
-namespace App\Controllers\Posts;
+namespace App\Controllers\TimeSheet;
 
 use App\Application\Controllers\Controller;
 use App\Domain\Exception\ValidationException;
-use App\Domain\Post\Post;
-use App\Domain\Post\PostService;
-use App\Domain\Post\PostValidation;
+use App\Domain\TimeSheet\TimeSheet;
+use App\Domain\TimeSheet\TimeSheetService;
 use App\Domain\User\UserService;
 use App\Domain\Utility\ArrayReader;
 use App\Domain\Validation\OutputEscapeService;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Log\LoggerInterface;
-use Slim\Handlers\Strategies\RequestHandler;
-use Firebase\JWT\JWT;
 
-class PostController extends Controller
+class TimeSheetController extends Controller
 {
 
     protected $postService;
@@ -27,7 +23,7 @@ class PostController extends Controller
 
     public function __construct(
         LoggerInterface $logger,
-        PostService $postService,
+        TimeSheetService $postService,
         UserService $userService,
         OutputEscapeService $outputEscapeService
     ) {
@@ -95,7 +91,7 @@ class PostController extends Controller
             if (null !== $postData = $request->getParsedBody()) {
                 // todo maybe add mapping a layer between client body and application logic
 
-                $post = new Post(new ArrayReader($postData));
+                $post = new TimeSheet(new ArrayReader($postData));
                 // Needed to tell repo what data to update
                 $post->setId($postFromDb['id']);
 
@@ -152,7 +148,7 @@ class PostController extends Controller
 
         if (null !== $postData = $request->getParsedBody()) {
 
-            $post = new Post(new ArrayReader($postData));
+            $post = new TimeSheet(new ArrayReader($postData));
             $post->setUserId($userId);
 
             try {

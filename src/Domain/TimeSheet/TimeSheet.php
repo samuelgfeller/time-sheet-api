@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Domain\Post;
+namespace App\Domain\TimeSheet;
 
 
 use App\Domain\Utility\ArrayReader;
 
-class Post
+class TimeSheet
 {
     private ?int $id;
     private ?int $userId;
@@ -28,13 +28,13 @@ class Post
     public function toArray(): array
     {
         // Not include required, from db non nullable values if they are null -> for update
-        if($this->id !== null){ $post['id'] = $this->id;}
-        if($this->userId !== null){ $post['user_id'] = $this->userId;}
+        if($this->id !== null){ $timeSheet['id'] = $this->id;}
+        if($this->userId !== null){ $timeSheet['user_id'] = $this->userId;}
 
         // Message is nullable and null is a valid value so it has to be included
-        $post['message'] = $this->message;
+        $timeSheet['message'] = $this->message;
 
-        return $post;
+        return $timeSheet;
     }
 
     /**

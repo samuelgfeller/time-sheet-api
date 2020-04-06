@@ -2,8 +2,8 @@
 
 use App\Application\Actions\PreflightAction;
 use App\Controller\AuthController;
-use App\Controllers\Posts\PostController;
-use App\Controllers\Users\UserController;
+use App\Controllers\TimeSheet\TimeSheetController;
+use App\Controllers\User\UserController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -28,22 +28,16 @@ return function (App $app) {
         $group->delete('/{id:[0-9]+}', UserController::class . ':delete');
     });
 
-    $app->group('/posts', function (RouteCollectorProxy $group) {
+    $app->group('/time-sheets', function (RouteCollectorProxy $group) {
         $group->options('', PreflightAction::class);  // Allow preflight requests
-        $group->get('', PostController::class . ':list');
-        $group->post('', PostController::class . ':create');
+        $group->get('', TimeSheetController::class . ':list');
+        $group->post('', TimeSheetController::class . ':create');
 
         $group->options('/{id:[0-9]+}', PreflightAction::class); // Allow preflight requests
-        $group->get('/{id:[0-9]+}', PostController::class . ':get');
-        $group->put('/{id:[0-9]+}', PostController::class . ':update');
-        $group->delete('/{id:[0-9]+}', PostController::class . ':delete');
+        $group->get('/{id:[0-9]+}', TimeSheetController::class . ':get');
+        $group->put('/{id:[0-9]+}', TimeSheetController::class . ':update');
+        $group->delete('/{id:[0-9]+}', TimeSheetController::class . ':delete');
     });
-
-    $app->options('/own-posts', PreflightAction::class); // Allow preflight requests
-//    $app->options('/own-posts', function (Request $request, Response $response): Response {
-//        return $response;
-//    });
-    $app->get('/own-posts', PostController::class . ':getOwnPosts');
 
     $app->get('/hello/{name}', function (Request $request, Response $response, array $args) {
         $name = $args['name'];

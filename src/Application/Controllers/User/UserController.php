@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Users;
+namespace App\Controllers\User;
 
 use App\Application\Controllers\Controller;
 use App\Domain\Exception\ValidationException;
