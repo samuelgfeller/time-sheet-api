@@ -61,6 +61,7 @@ class AuthController extends Controller
                         201
                     );
                 }
+                $this->logger->info('User "' . $user->getEmail() . '" could not be created');
                 return $this->respondWithJson(
                     $response,
                     ['status' => 'error', 'message' => 'User could not be registered']
@@ -73,8 +74,9 @@ class AuthController extends Controller
             ];
             return $this->respondWithJson($response, $responseData, 404);
         }
-        $this->logger->notice('User ' . $loggedUserId . ' tried to view all other users');
 
+
+        $this->logger->notice('User ' . $loggedUserId . ' tried to create new user');
 
         return $this->respondWithJson(
             $response,
@@ -92,6 +94,9 @@ class AuthController extends Controller
         try {
             if ($userWithId = $this->userService->userAllowedToLogin($user)) {
                 $token = $this->userService->generateToken($userWithId);
+
+                $this->logger->info('User ' . $user->getEmail() . ' logged in.');
+
                 return $this->respondWithJson(
                     $response,
                     ['token' => $token, 'status' => 'success', 'message' => 'Logged in'],
