@@ -28,10 +28,10 @@ return function (App $app) {
         $group->delete('/{id:[0-9]+}', UserController::class . ':delete');
     });
 
-    $app->group('/time-sheets', function (RouteCollectorProxy $group) {
+    $app->group('/timers', function (RouteCollectorProxy $group) {
         $group->options('', PreflightAction::class);  // Allow preflight requests
         $group->get('', TimeSheetController::class . ':list');
-        $group->post('', TimeSheetController::class . ':create');
+        $group->post('', TimeSheetController::class . ':startTime');
 
         $group->options('/{id:[0-9]+}', PreflightAction::class); // Allow preflight requests
         $group->get('/{id:[0-9]+}', TimeSheetController::class . ':get');
