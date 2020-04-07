@@ -18,7 +18,7 @@ return function (App $app) {
         new JwtAuthentication(
             [
                 //      'path' => '/api', /* or ["/api", "/admin"] */
-                'ignore' => ['/frontend', '/login', '/register', '/hello'],
+                'ignore' => ['/frontend', '/login', '/hello'],
                 'secret' => 'test',//$settings['settings']['jwt']['secret'],
                 'algorithm' => ['HS256'],
                 'logger' => $logger,
