@@ -32,29 +32,45 @@ class AuthController extends Controller
 
     public function register(Request $request, Response $response): Response
     {
-        // If a html form name changes, these changes have to be done in the Entities constructor
-        // too since these values will be the keys from the ArrayReader
-        $userData = $request->getParsedBody();
 
-        // Use Entity instead of DTO for simplicity https://github.com/samuelgfeller/slim-api-example/issues/2#issuecomment-597245455
-        $user = new User(new ArrayReader($userData));
+        $loggedUserId = (int)$this->getUserIdFromToken($request);
 
-        try {
-            $insertId = $this->userService->createUser($user);
-        } catch (ValidationException $exception) {
-            return $this->respondValidationError($exception->getValidationResult(), $response);
+        $userRole = $this->userService->getUserRole($loggedUserId);
+
+        if ($userRole === 'admin') {
+            // If a html form name changes, these changes have to be done in the Entities constructor
+            // too since these values will be the keys from the ArrayReader
+            $userData = $request->getParsedBody();
+
+            // Use Entity instead of DTO for simplicity https://github.com/samuelgfeller/slim-api-example/issues/2#issuecomment-597245455
+            $user = new User(new ArrayReader($userData));
+
+            try {
+                $insertId = $this->userService->createUser($user);
+            } catch (ValidationException $exception) {
+                return $this->respondValidationError($exception->getValidationResult(), $response);
+            }
+
+            if (null !== $insertId) {
+                $this->logger->info('User "' . $user->getEmail() . '" created');
+
+                return $this->respondWithJson(
+                    $response,
+                    ['status' => 'success', 'message' => 'User created successfully'],
+                    201
+                );
+            }
+            return $this->respondWithJson($response, ['status' => 'error', 'message' => 'User could not be registered']);
         }
+        $this->logger->notice('User ' . $loggedUserId . ' tried to view all other users');
 
-        if (null !== $insertId) {
-            $this->logger->info('User "' . $userData['email'] . '" created');
+        return $this->respondWithJson(
+            $response,
+            ['status' => 'error', 'message' => 'You have to be admin to register new users'],
+            403
+        );
 
-            return $this->respondWithJson(
-                $response,
-                ['status' => 'success', 'message' => 'User created successfully'],
-                201
-            );
-        }
-        return $this->respondWithJson($response, ['status' => 'error', 'message' => 'User could not be registered']);
+
     }
 
     public function login(Request $request, Response $response): Response
