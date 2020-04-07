@@ -68,7 +68,7 @@ class TimeSheetRepository extends DataManager
      * @param array $data
      * @return string lastInsertId
      */
-    public function insertTimeSheet(array $data): string {
+    public function insertTime(array $data): string {
         return $this->insert($data);
     }
     

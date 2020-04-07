@@ -3,6 +3,7 @@
 
 namespace App\Domain\TimeSheet;
 
+use App\Domain\Timer\Timer;
 use App\Domain\User\UserService;
 use App\Infrastructure\Persistence\TimeSheet\TimeSheetRepository;
 
@@ -60,12 +61,20 @@ class TimeSheetService
     /**
      * Insert timeSheet in database
      *
-     * @param TimeSheet $timeSheet
-     * @return string
+     * @param int $userId
+     * @return array
      */
-    public function createTimeSheet(TimeSheet $timeSheet): string
+    public function startTime(int $userId): array
     {
-        $this->timeSheetValidation->validateTimeSheetCreation($timeSheet);
-        return $this->timeSheetRepository->insertTimeSheet($timeSheet->toArray());
+        $startTime = date('Y-m-d H:i:s');
+        $timer = [
+            'user_id' => $userId,
+            'start' => $startTime,
+        ];
+
+        return [
+            'start_time' => $startTime,
+            'insert_id' => $this->timeSheetRepository->insertTime($timer)
+        ];
     }
 }
