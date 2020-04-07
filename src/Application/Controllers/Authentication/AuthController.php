@@ -9,6 +9,7 @@ use App\Domain\User\User;
 use App\Domain\User\UserService;
 use App\Domain\User\UserValidation;
 use App\Domain\Utility\ArrayReader;
+use App\Infrastructure\Persistence\Exceptions\PersistenceRecordNotFoundException;
 use DateTime;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -32,45 +33,54 @@ class AuthController extends Controller
 
     public function register(Request $request, Response $response): Response
     {
-
         $loggedUserId = (int)$this->getUserIdFromToken($request);
 
-        $userRole = $this->userService->getUserRole($loggedUserId);
+        try {
+            $userRole = $this->userService->getUserRole($loggedUserId);
 
-        if ($userRole === 'admin') {
-            // If a html form name changes, these changes have to be done in the Entities constructor
-            // too since these values will be the keys from the ArrayReader
-            $userData = $request->getParsedBody();
+            if ($userRole === 'admin') {
+                // If a html form name changes, these changes have to be done in the Entities constructor
+                // too since these values will be the keys from the ArrayReader
+                $userData = $request->getParsedBody();
 
-            // Use Entity instead of DTO for simplicity https://github.com/samuelgfeller/slim-api-example/issues/2#issuecomment-597245455
-            $user = new User(new ArrayReader($userData));
+                // Use Entity instead of DTO for simplicity https://github.com/samuelgfeller/slim-api-example/issues/2#issuecomment-597245455
+                $user = new User(new ArrayReader($userData));
 
-            try {
-                $insertId = $this->userService->createUser($user);
-            } catch (ValidationException $exception) {
-                return $this->respondValidationError($exception->getValidationResult(), $response);
-            }
+                try {
+                    $insertId = $this->userService->createUser($user);
+                } catch (ValidationException $exception) {
+                    return $this->respondValidationError($exception->getValidationResult(), $response);
+                }
 
-            if (null !== $insertId) {
-                $this->logger->info('User "' . $user->getEmail() . '" created');
+                if (null !== $insertId) {
+                    $this->logger->info('User "' . $user->getEmail() . '" created');
 
+                    return $this->respondWithJson(
+                        $response,
+                        ['status' => 'success', 'message' => 'User created successfully'],
+                        201
+                    );
+                }
                 return $this->respondWithJson(
                     $response,
-                    ['status' => 'success', 'message' => 'User created successfully'],
-                    201
+                    ['status' => 'error', 'message' => 'User could not be registered']
                 );
             }
-            return $this->respondWithJson($response, ['status' => 'error', 'message' => 'User could not be registered']);
+        } catch (PersistenceRecordNotFoundException $e) {
+            $responseData = [
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ];
+            return $this->respondWithJson($response, $responseData, 404);
         }
         $this->logger->notice('User ' . $loggedUserId . ' tried to view all other users');
+
 
         return $this->respondWithJson(
             $response,
             ['status' => 'error', 'message' => 'You have to be admin to register new users'],
             403
         );
-
-
     }
 
     public function login(Request $request, Response $response): Response

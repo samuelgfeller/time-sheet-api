@@ -144,6 +144,7 @@ class UserService
      *
      * @param int $id
      * @return string
+     * @throws PersistenceRecordNotFoundException
      */
     public function getUserRole(int $id): string
     {
