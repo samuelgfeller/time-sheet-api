@@ -30,7 +30,7 @@ return function (App $app) {
 
     $app->group('/timers', function (RouteCollectorProxy $group) {
         $group->options('', PreflightAction::class);  // Allow preflight requests
-        $group->get('', TimeSheetController::class . ':list');
+        $group->get('', TimeSheetController::class . ':getTimer');
         $group->post('', TimeSheetController::class . ':startTime');
         $group->put('', TimeSheetController::class . ':stopTime');
 

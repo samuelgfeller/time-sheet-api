@@ -36,6 +36,23 @@ class TimeSheetService
     }
 
     /**
+     * Returns the start time of the running timer
+     * or null if no timer is running
+     *
+     * @param $userId
+     * @return string|null
+     */
+    public function findRunningTimerStartTime($userId): ?string
+    {
+        $runningTime = $this->timeSheetRepository->findRunningTime($userId);
+        if ($runningTime !== []){
+            return $runningTime['start'];
+        }
+        // If no timer is running it's not an exception, not an error
+        return null;
+    }
+
+    /**
      * Add user infos to time sheet array
      *
      * @param $timeSheets

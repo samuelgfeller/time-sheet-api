@@ -51,14 +51,34 @@ class TimeSheetController extends Controller
             return $this->respondWithJson($response, $timeSheetWithUser);
         }*/
 
-    public function list(Request $request, Response $response, array $args)
+    public function getTimer(Request $request, Response $response, array $args)
     {
-        $timeSheetsWithUsers = $this->timeSheetService->findAllTimeSheets();
+        $userId = (int)$this->getUserIdFromToken($request);
 
-        // output escaping only done here https://stackoverflow.com/a/20962774/9013718
-        $timeSheetsWithUsers = $this->outputEscapeService->escapeTwoDimensionalArray($timeSheetsWithUsers);
+        $requestBody = $request->getQueryParams();
 
-        return $this->respondWithJson($response, $timeSheetsWithUsers);
+        if (isset($requestBody['requested_resource'])){
+            if ($requestBody['requested_resource'] === 'running_timer'){
+                $runningTimerStart = $this->timeSheetService->findRunningTimerStartTime($userId);
+                if ($runningTimerStart !== null){
+                    return $this->respondWithJson($response,['running_timer_start' => $runningTimerStart]);
+                }
+                // Timer not started so string "null" is sent to client
+                return $this->respondWithJson($response,['running_timer_start' => 'null']);
+            }
+            else if($requestBody['requested_resource'] === 'time_sheet'){
+
+/*                $timeSheetsWithUsers = $this->timeSheetService->findAllTimeSheets();
+
+                // output escaping only done here https://stackoverflow.com/a/20962774/9013718
+                $timeSheetsWithUsers = $this->outputEscapeService->escapeTwoDimensionalArray($timeSheetsWithUsers);
+
+                return $this->respondWithJson($response, $timeSheetsWithUsers);*/
+            }
+        }
+        return $this->respondWithJson(
+            $response,['status' => 'error', 'message' => 'requested_resource not defined in request body'],400
+        );
     }
 
     /*
