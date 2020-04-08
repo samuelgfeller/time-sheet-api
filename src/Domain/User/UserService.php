@@ -3,7 +3,6 @@
 
 namespace App\Domain\User;
 
-use App\Domain\Exception\ValidationException;
 use App\Infrastructure\Persistence\Exceptions\PersistenceRecordNotFoundException;
 use App\Infrastructure\Persistence\User\UserRepository;
 use Firebase\JWT\JWT;

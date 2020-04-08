@@ -23,7 +23,7 @@ return function (App $app) {
                 'algorithm' => ['HS256'],
                 'logger' => $logger,
                 // HTTPS not mandatory for local development
-                'relaxed' => ['localhost', 'dev.time-sheet-api', 'dev.time-sheet-frontend'],
+                'relaxed' => ['localhost', 'dev.time-sheet-api', 'http://dev.time-sheet-frontend'],
                 'error' => function ($response, $arguments) {
                     $data['status'] = 'error';
                     $data['message'] = $arguments['message'];
