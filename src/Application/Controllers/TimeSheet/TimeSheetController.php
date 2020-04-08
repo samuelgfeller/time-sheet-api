@@ -3,13 +3,11 @@
 namespace App\Controllers\TimeSheet;
 
 use App\Application\Controllers\Controller;
-use App\Domain\Exception\ValidationException;
-use App\Domain\TimeSheet\TimeSheet;
+use App\Domain\Exception\TimerAlreadyStartedException;
 use App\Domain\TimeSheet\TimeSheetService;
 use App\Domain\User\UserService;
 use App\Domain\Utility\ArrayReader;
 use App\Domain\Validation\OutputEscapeService;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Log\LoggerInterface;
@@ -76,19 +74,55 @@ class TimeSheetController extends Controller
             return $this->respondWithJson($response, $timeSheets);
         }*/
 
-    public function startTime(Request $request, ResponseInterface $response, array $args): ResponseInterface
+    public function startTime(Request $request, Response $response, array $args): Response
     {
         $userId = (int)$this->getUserIdFromToken($request);
 
-        $domainResult = $this->timeSheetService->startTime($userId);
+        try {
+            $domainResult = $this->timeSheetService->startTime($userId);
+            if (null !== $domainResult['insert_id']) {
+                return $this->respondWithJson(
+                    $response,
+                    ['status' => 'success', 'start_time' => $domainResult['start_time']],
+                    201
+                );
+            }
+        } catch (TimerAlreadyStartedException $alreadyStartedException) {
+            $responseData = [
+                'status' => 'error',
+                'message' => $alreadyStartedException->getMessage(),
+            ];
+            return $this->respondWithJson(
+                $response,
+                $responseData,
+                409
+            ); // conflict code https://softwareengineering.stackexchange.com/a/341824/359511
+        }
+        $response = $this->respondWithJson(
+            $response,
+            ['status' => 'warning', 'message' => 'Time sheet not created']
+        );
+        return $response->withAddedHeader('Warning', 'The timer could not be created');
+    }
+
+    public function stopTime(Request $request, Response $response, array $args): Response
+    {
+        $userId = (int)$this->getUserIdFromToken($request);
+
+        $domainResult = $this->timeSheetService->stopTime($userId);
         if (null !== $domainResult['insert_id']) {
             return $this->respondWithJson(
                 $response,
-                ['status' => 'success', 'start_time' => $domainResult['start_time']],
+                ['status' => 'success', 'message' => 'Timer stopped'],
                 201
             );
         }
-        $response = $this->respondWithJson($response, ['status' => 'warning', 'message' => 'Time sheet not created']);
-        return $response->withAddedHeader('Warning', 'The time sheet could not be created');
+        $response = $this->respondWithJson(
+            $response,
+            ['status' => 'warning', 'message' => 'Timer could not be stopped']
+        );
+        return $response->withAddedHeader('Warning', 'Timer could not be stopped');
     }
+
+
 }

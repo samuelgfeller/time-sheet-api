@@ -13,7 +13,7 @@ class TimeSheetRepository extends DataManager
     public function __construct(Connection $conn = null)
     {
         parent::__construct($conn);
-        $this->table = 'time-sheet';
+        $this->table = 'time_sheet';
     }
 
     /**
@@ -57,9 +57,9 @@ class TimeSheetRepository extends DataManager
      * @param $userId
      * @return array
      */
-    public function findAllTimeSheetsByUserId(int $userId): array
+    public function findRunningTime(int $userId): array
     {
-        return $this->findAllBy('user_id',$userId);
+        return $this->findOneBy(['stop IS' => null, 'user_id' => $userId]);
     }
 
     /**

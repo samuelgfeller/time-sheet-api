@@ -3,6 +3,7 @@
 
 namespace App\Domain\TimeSheet;
 
+use App\Domain\Exception\TimerAlreadyStartedException;
 use App\Domain\Timer\Timer;
 use App\Domain\User\UserService;
 use App\Infrastructure\Persistence\TimeSheet\TimeSheetRepository;
@@ -13,16 +14,13 @@ class TimeSheetService
 
     private TimeSheetRepository $timeSheetRepository;
     private UserService $userService;
-    protected TimeSheetValidation $timeSheetValidation;
 
     public function __construct(
         TimeSheetRepository $timeSheetRepository,
-        UserService $userService,
-        TimeSheetValidation $timeSheetValidation
+        UserService $userService
     ) {
         $this->timeSheetRepository = $timeSheetRepository;
         $this->userService = $userService;
-        $this->timeSheetValidation = $timeSheetValidation;
     }
 
     /**
@@ -59,13 +57,18 @@ class TimeSheetService
     }
 
     /**
-     * Insert timeSheet in database
+     * Set the start time and write it in database
      *
      * @param int $userId
-     * @return array
+     * @return array with the start_time and insert id
+     * @throws TimerAlreadyStartedException
      */
     public function startTime(int $userId): array
     {
+        // Prevent timer to be started multiple times
+        if ($this->timeSheetRepository->findRunningTime($userId) !== []) {
+            throw new TimerAlreadyStartedException('The timer is already running and can\'t be started again');
+        }
         $startTime = date('Y-m-d H:i:s');
         $timer = [
             'user_id' => $userId,
