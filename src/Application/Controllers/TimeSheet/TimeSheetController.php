@@ -132,7 +132,7 @@ class TimeSheetController extends Controller
 
         try {
             $domainResult = $this->timeSheetService->stopTime($userId);
-            if (null !== $domainResult['insert_id']) {
+            if ($domainResult) {
                 return $this->respondWithJson(
                     $response,
                     ['status' => 'success', 'message' => 'Timer stopped'],
