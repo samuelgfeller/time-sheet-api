@@ -66,21 +66,21 @@ abstract class DataManager
 
     /**
      * Searches entry in table with given value at given column
+     * split by AND
      *
-     * @param string $column
-     * @param $value
+     * @param $conditions array like this 'column' => 'value' !!! If the value is null
+     * the word "IS" has to be placed at the end of the key
      * @param array $fields
      * @return array
      */
-    public function findOneBy(string $column, $value, array $fields = ['*']): array
+    public function findOneBy(array $conditions, array $fields = ['*']): array
     {
         $query = $this->newSelectQuery();
         // Retrieving a single Row
         $query = $query->select($fields)
-            ->andWhere([
-                'deleted_at IS' => null,
-                $column => $value
-            ]);
+            ->andWhere(array_merge(
+                ['deleted_at IS' => null],
+                $conditions));
         // ?: returns the value on the left only if it is set and truthy (if not set it gives a notice)
         return $query->execute()->fetch('assoc') ?: [];
     }
