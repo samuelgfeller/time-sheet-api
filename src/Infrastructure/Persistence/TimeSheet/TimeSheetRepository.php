@@ -90,7 +90,7 @@ class TimeSheetRepository extends DataManager
      * @param array $data
      * @return bool
      */
-    public function updateTimeSheet(array $data,int $id): bool {
+    public function updateTime(array $data,int $id): bool {
         return $this->update($data, $id);
     }
 }

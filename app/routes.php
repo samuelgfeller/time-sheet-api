@@ -32,6 +32,8 @@ return function (App $app) {
         $group->options('', PreflightAction::class);  // Allow preflight requests
         $group->get('', TimeSheetController::class . ':list');
         $group->post('', TimeSheetController::class . ':startTime');
+        $group->put('', TimeSheetController::class . ':stopTime');
+
 
         $group->options('/{id:[0-9]+}', PreflightAction::class); // Allow preflight requests
         $group->get('/{id:[0-9]+}', TimeSheetController::class . ':get');

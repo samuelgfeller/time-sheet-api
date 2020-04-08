@@ -4,6 +4,7 @@ namespace App\Controllers\TimeSheet;
 
 use App\Application\Controllers\Controller;
 use App\Domain\Exception\TimerAlreadyStartedException;
+use App\Domain\Exception\TimerNotStartedException;
 use App\Domain\TimeSheet\TimeSheetService;
 use App\Domain\User\UserService;
 use App\Domain\Utility\ArrayReader;
@@ -109,12 +110,24 @@ class TimeSheetController extends Controller
     {
         $userId = (int)$this->getUserIdFromToken($request);
 
-        $domainResult = $this->timeSheetService->stopTime($userId);
-        if (null !== $domainResult['insert_id']) {
+        try {
+            $domainResult = $this->timeSheetService->stopTime($userId);
+            if (null !== $domainResult['insert_id']) {
+                return $this->respondWithJson(
+                    $response,
+                    ['status' => 'success', 'message' => 'Timer stopped'],
+                    200
+                );
+            }
+        } catch (TimerNotStartedException $timerNotStartedException){
+            $responseData = [
+                'status' => 'error',
+                'message' => $timerNotStartedException->getMessage(),
+            ];
             return $this->respondWithJson(
                 $response,
-                ['status' => 'success', 'message' => 'Timer stopped'],
-                201
+                $responseData,
+                409
             );
         }
         $response = $this->respondWithJson(

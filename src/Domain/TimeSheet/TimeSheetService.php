@@ -4,6 +4,7 @@
 namespace App\Domain\TimeSheet;
 
 use App\Domain\Exception\TimerAlreadyStartedException;
+use App\Domain\Exception\TimerNotStartedException;
 use App\Domain\Timer\Timer;
 use App\Domain\User\UserService;
 use App\Infrastructure\Persistence\TimeSheet\TimeSheetRepository;
@@ -79,5 +80,20 @@ class TimeSheetService
             'start_time' => $startTime,
             'insert_id' => $this->timeSheetRepository->insertTime($timer)
         ];
+    }
+
+    /**
+     * @param $userId
+     * @return bool
+     * @throws TimerNotStartedException
+     */
+    public function stopTime($userId)
+    {
+        $runningTime = $this->timeSheetRepository->findRunningTime($userId);
+        if ($runningTime !== []){
+            return $this->timeSheetRepository->updateTime(['stop' => date('Y-m-d H:i:s')],$runningTime['id']);
+        }
+
+        throw new TimerNotStartedException('Unable to stop time because no timer is running');
     }
 }
