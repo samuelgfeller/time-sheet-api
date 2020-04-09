@@ -32,10 +32,10 @@ class TimeSheetService
      *
      * @return array
      */
-    public function findAllTimeSheets(): array
+    public function findTimeSheet(): array
     {
-        $allTimeSheets = $this->timeSheetRepository->findAllTimeSheets();
-        return $this->populateTimeSheetsArrayWithUser($allTimeSheets);
+        $timeSheet = $this->timeSheetRepository->findAllTimes();
+        return $this->populateTimeSheetWithUser($timeSheet);
     }
 
     /**
@@ -45,7 +45,7 @@ class TimeSheetService
      * @param $userId
      * @return array|null
      */
-    public function findRunningTimerStartTime($userId): ?array
+    public function findRunningTimer($userId): ?array
     {
         $runningTime = $this->timeSheetRepository->findRunningTime($userId);
         if ($runningTime !== []){
@@ -58,23 +58,23 @@ class TimeSheetService
     /**
      * Add user infos to time sheet array
      *
-     * @param $timeSheets
+     * @param $timeSheet array with all tracked times
      * @return array
      */
-    private function populateTimeSheetsArrayWithUser($timeSheets): array
+    private function populateTimeSheetWithUser(array $timeSheet): array
     {
         // Add user name info to timeSheet
-        $timeSheetsWithUser = [];
-        foreach ($timeSheets as $timeSheet) {
+        $timeSheetWithUser = [];
+        foreach ($timeSheet as $timer) {
             // Get user information connected to timeSheet
-            $user = $this->userService->findUser($timeSheet['user_id']);
-            // If user was deleted but time not, time should not be shown and also technically deleted
+            $user = $this->userService->findUser($timer['user_id']);
+            // If user was deleted but time not, time should not be shown since it is also technically deleted
             if (isset($user['name'])) {
-                $timeSheet['user_name'] = $user['name'];
-                $timeSheetsWithUser[] = $timeSheet;
+                $timer['user_name'] = $user['name'];
+                $timeSheetWithUser[] = $timer;
             }
         }
-        return $timeSheetsWithUser;
+        return $timeSheetWithUser;
     }
 
     /**

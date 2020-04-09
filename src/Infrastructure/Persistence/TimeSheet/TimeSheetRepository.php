@@ -21,7 +21,7 @@ class TimeSheetRepository extends DataManager
      *
      * @return array
      */
-    public function findAllTimeSheets(): array
+    public function findAllTimes(): array
     {
         return $this->findAll();
     }

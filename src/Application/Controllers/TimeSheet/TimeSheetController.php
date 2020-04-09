@@ -11,6 +11,7 @@ use App\Domain\TimeSheet\TimeSheetService;
 use App\Domain\User\UserService;
 use App\Domain\Utility\ArrayReader;
 use App\Domain\Validation\OutputEscapeService;
+use App\Infrastructure\Persistence\Exceptions\PersistenceRecordNotFoundException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Log\LoggerInterface;
@@ -59,16 +60,29 @@ class TimeSheetController extends Controller
 
         $requestBody = $request->getQueryParams();
 
-        if (isset($requestBody['requested_resource'])){
-            if ($requestBody['requested_resource'] === 'running_timer'){
-                $runningTimerStart = $this->timeSheetService->findRunningTimerStartTime($userId);
-                if ($runningTimerStart !== null){
-                    return $this->respondWithJson($response,['running_timer_start' => $runningTimerStart['start'],'activity' => $runningTimerStart['activity']]);
+        if (isset($requestBody['requested_resource'])) {
+            if ($requestBody['requested_resource'] === 'running_timer') {
+                $runningTimer = $this->timeSheetService->findRunningTimer($userId);
+
+                // Only here for the presentation but useless since the value goes in a textarea in frontend where its not interpreted by the browser
+                // It causes that the escaped strings will be printed literally for e.g. "&" will be displayed "&amp"
+                $runningTimer = $this->outputEscapeService->escapeOneDimensionalArray($runningTimer);
+
+                if ($runningTimer !== null) {
+                    return $this->respondWithJson(
+                        $response,
+                        [
+                            'running_timer_start' => $runningTimer['start'],
+                            'activity' => $runningTimer['activity']
+                        ]
+                    );
                 }
                 // Timer not started so string "null" is sent to client
-                return $this->respondWithJson($response,['running_timer_start' => 'null']);
+                return $this->respondWithJson($response, ['running_timer_start' => 'null']);
             }
-            else if($requestBody['requested_resource'] === 'time_sheet'){
+
+            if ($requestBody['requested_resource'] === 'time_sheet') {
+                $loggedUserId = (int)$this->getUserIdFromToken($request);
 
 /*                $timeSheetsWithUsers = $this->timeSheetService->findAllTimeSheets();
 
@@ -82,20 +96,6 @@ class TimeSheetController extends Controller
             $response,['status' => 'error', 'message' => 'requested_resource not defined in request body'],400
         );
     }
-
-    /*
-    // Commented out because unused. If I'd use it, it would be done approx like this. Not tested though.
-
-    public function getOwnTimeSheets(Request $request, Response $response, array $args): Response
-        {
-            $loggedUserId = (int)$this->getUserIdFromToken($request);
-
-            $timeSheets = $this->timeSheetService->findAllTimeSheetsFromUser($loggedUserId);
-
-            $timeSheets = $this->outputEscapeService->escapeTwoDimensionalArray($timeSheets);
-
-            return $this->respondWithJson($response, $timeSheets);
-        }*/
 
     public function startTime(Request $request, Response $response, array $args): Response
     {
@@ -146,7 +146,7 @@ class TimeSheetController extends Controller
                     200
                 );
             }
-        } catch (TimerNotStartedException $timerNotStartedException){
+        } catch (TimerNotStartedException $timerNotStartedException) {
             $responseData = [
                 'status' => 'error',
                 'message' => $timerNotStartedException->getMessage(),
