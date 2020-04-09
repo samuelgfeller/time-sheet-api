@@ -84,16 +84,40 @@ class TimeSheetController extends Controller
             if ($requestBody['requested_resource'] === 'time_sheet') {
                 $loggedUserId = (int)$this->getUserIdFromToken($request);
 
-/*                $timeSheetsWithUsers = $this->timeSheetService->findAllTimeSheets();
+                try {
+                    $userRole = $this->userService->getUserRole($loggedUserId);
 
-                // output escaping only done here https://stackoverflow.com/a/20962774/9013718
-                $timeSheetsWithUsers = $this->outputEscapeService->escapeTwoDimensionalArray($timeSheetsWithUsers);
+                    if ($userRole === 'admin') {
+                        $timeSheetsWithUsers = $this->timeSheetService->findTimeSheet();
 
-                return $this->respondWithJson($response, $timeSheetsWithUsers);*/
+                        // output escaping only done here https://stackoverflow.com/a/20962774/9013718
+                        $timeSheetsWithUsers = $this->outputEscapeService->escapeTwoDimensionalArray(
+                            $timeSheetsWithUsers
+                        );
+
+                        return $this->respondWithJson($response, $timeSheetsWithUsers);
+                    }
+                } catch (PersistenceRecordNotFoundException $e) {
+                  // If userRole is not found
+                    $responseData = [
+                        'status' => 'error',
+                        'message' => $e->getMessage(),
+                    ];
+                    return $this->respondWithJson($response, $responseData, 404);
+                }
+                $this->logger->notice('User ' . $loggedUserId . ' tried to view time sheet');
+
+                return $this->respondWithJson(
+                    $response,
+                    ['status' => 'error', 'message' => 'You have to be admin to view the time sheet'],
+                    403
+                );
             }
         }
         return $this->respondWithJson(
-            $response,['status' => 'error', 'message' => 'requested_resource not defined in request body'],400
+            $response,
+            ['status' => 'error', 'message' => 'requested_resource not defined in request body'],
+            400
         );
     }
 
