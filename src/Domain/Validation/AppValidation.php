@@ -59,7 +59,7 @@ abstract class AppValidation
      */
     protected function validateLengthMax($value, $fieldname, ValidationResult $validationResult, $length = 255): void
     {
-        if (strlen(trim($value)) > $length) {
+        if (mb_strlen(trim($value)) > $length) {
             $validationResult->setError($fieldname, sprintf('Required maximum length is %s', $length));
         }
     }
