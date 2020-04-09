@@ -5,6 +5,7 @@ namespace App\Controllers\TimeSheet;
 use App\Application\Controllers\Controller;
 use App\Domain\Exception\TimerAlreadyStartedException;
 use App\Domain\Exception\TimerNotStartedException;
+use App\Domain\Exception\ValidationException;
 use App\Domain\Timer\Timer;
 use App\Domain\TimeSheet\TimeSheetService;
 use App\Domain\User\UserService;
@@ -111,6 +112,8 @@ class TimeSheetController extends Controller
                     201
                 );
             }
+        } catch (ValidationException $exception) {
+            return $this->respondValidationError($exception->getValidationResult(), $response);
         } catch (TimerAlreadyStartedException $alreadyStartedException) {
             $responseData = [
                 'status' => 'error',
