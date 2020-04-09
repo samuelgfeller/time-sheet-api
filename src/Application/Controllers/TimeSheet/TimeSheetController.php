@@ -62,7 +62,7 @@ class TimeSheetController extends Controller
             if ($requestBody['requested_resource'] === 'running_timer'){
                 $runningTimerStart = $this->timeSheetService->findRunningTimerStartTime($userId);
                 if ($runningTimerStart !== null){
-                    return $this->respondWithJson($response,['running_timer_start' => $runningTimerStart]);
+                    return $this->respondWithJson($response,['running_timer_start' => $runningTimerStart['start'],'activity' => $runningTimerStart['activity']]);
                 }
                 // Timer not started so string "null" is sent to client
                 return $this->respondWithJson($response,['running_timer_start' => 'null']);

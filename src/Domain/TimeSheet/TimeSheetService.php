@@ -43,13 +43,13 @@ class TimeSheetService
      * or null if no timer is running
      *
      * @param $userId
-     * @return string|null
+     * @return array|null
      */
-    public function findRunningTimerStartTime($userId): ?string
+    public function findRunningTimerStartTime($userId): ?array
     {
         $runningTime = $this->timeSheetRepository->findRunningTime($userId);
         if ($runningTime !== []){
-            return $runningTime['start'];
+            return $runningTime;
         }
         // If no timer is running it's not an exception, not an error
         return null;

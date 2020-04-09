@@ -5,7 +5,6 @@ namespace App\Infrastructure\Persistence;
 use App\Infrastructure\Persistence\Exceptions\PersistenceRecordNotFoundException;
 use Cake\Database\Connection;
 use Cake\Database\Query;
-use Cake\Database\StatementInterface;
 
 abstract class DataManager
 {
