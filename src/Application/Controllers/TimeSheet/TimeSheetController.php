@@ -112,6 +112,7 @@ class TimeSheetController extends Controller
             $responseData = [
                 'status' => 'error',
                 'message' => $alreadyStartedException->getMessage(),
+                'errCode' => 'timer_already_started',
             ];
             return $this->respondWithJson(
                 $response,
