@@ -30,6 +30,12 @@ return function (ContainerBuilder $containerBuilder) {
                 'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
                 'level' => Logger::DEBUG,
             ],
+            'cake_query_logger' => [
+                'className' => 'File',
+                'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/',
+                'file' => 'queries.log',
+                'scopes' => ['queriesLog']
+             ],
             'db' => [
                 'host' => 'localhost',
                 'database' => 'slim-api-example',
