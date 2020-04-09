@@ -9,14 +9,16 @@ class Timer
 {
     private ?int $id;
     private ?int $userId;
-    private string $start;
-    private string $stop;
+    private ?string $start;
+    private ?string $stop;
+    private ?string $activity;
 
     public function __construct(ArrayReader $arrayReader) {
         $this->id = $arrayReader->findInt('id');
         $this->userId = $arrayReader->findInt('user_id');
-        $this->start = $arrayReader->getString('start');
-        $this->stop = $arrayReader->getString('stop');
+        $this->start = $arrayReader->findString('start');
+        $this->stop = $arrayReader->findString('stop');
+        $this->activity = $arrayReader->findString('activity');
     }
 
     /**
@@ -29,13 +31,13 @@ class Timer
      */
     public function toArray(): array
     {
-        // Not include required, from db non nullable values if they are null -> for update
+        $timeSheet = [];
+
         if($this->id !== null){ $timeSheet['id'] = $this->id;}
         if($this->userId !== null){ $timeSheet['user_id'] = $this->userId;}
-
-        // Message is nullable and null is a valid value so it has to be included
-        $timeSheet['start'] = $this->start;
-        $timeSheet['stop'] = $this->stop;
+        if($this->start !== null){ $timeSheet['start'] = $this->start;}
+        if($this->stop !== null){ $timeSheet['stop'] = $this->stop;}
+        if($this->activity !== null){ $timeSheet['activity'] = $this->activity;}
 
         return $timeSheet;
     }
@@ -103,5 +105,23 @@ class Timer
     {
         $this->stop = $stop;
     }
+
+    /**
+     * @return string
+     */
+    public function getActivity(): string
+    {
+        return $this->activity;
+    }
+
+    /**
+     * @param string $activity
+     */
+    public function setActivity(string $activity): void
+    {
+        $this->activity = $activity;
+    }
+
+
 
 }

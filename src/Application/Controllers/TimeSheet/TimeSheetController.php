@@ -5,6 +5,7 @@ namespace App\Controllers\TimeSheet;
 use App\Application\Controllers\Controller;
 use App\Domain\Exception\TimerAlreadyStartedException;
 use App\Domain\Exception\TimerNotStartedException;
+use App\Domain\Timer\Timer;
 use App\Domain\TimeSheet\TimeSheetService;
 use App\Domain\User\UserService;
 use App\Domain\Utility\ArrayReader;
@@ -97,10 +98,12 @@ class TimeSheetController extends Controller
 
     public function startTime(Request $request, Response $response, array $args): Response
     {
-        $userId = (int)$this->getUserIdFromToken($request);
-
+        $timerData = $request->getParsedBody();
+        $timerData['user_id'] = (int)$this->getUserIdFromToken($request);
         try {
-            $domainResult = $this->timeSheetService->startTime($userId);
+            // Use Entity instead of DTO for simplicity https://github.com/samuelgfeller/slim-api-example/issues/2#issuecomment-597245455
+            $timer = new Timer(new ArrayReader($timerData));
+            $domainResult = $this->timeSheetService->startTime($timer);
             if (null !== $domainResult['insert_id']) {
                 return $this->respondWithJson(
                     $response,

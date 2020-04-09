@@ -6,6 +6,7 @@ namespace App\Domain\TimeSheet;
 use App\Domain\Exception\TimerAlreadyStartedException;
 use App\Domain\Exception\TimerNotStartedException;
 use App\Domain\Timer\Timer;
+use App\Domain\TimeSheet\TimeSheetValidation;
 use App\Domain\User\UserService;
 use App\Infrastructure\Persistence\TimeSheet\TimeSheetRepository;
 
@@ -18,10 +19,12 @@ class TimeSheetService
 
     public function __construct(
         TimeSheetRepository $timeSheetRepository,
-        UserService $userService
+        UserService $userService,
+        TimeSheetValidation $timeSheetValidation
     ) {
         $this->timeSheetRepository = $timeSheetRepository;
         $this->userService = $userService;
+        $this->timeSheetValidation = $timeSheetValidation;
     }
 
     /**
@@ -77,25 +80,24 @@ class TimeSheetService
     /**
      * Set the start time and write it in database
      *
-     * @param int $userId
+     * @param Timer $timer
      * @return array with the start_time and insert id
-     * @throws TimerAlreadyStartedException
      */
-    public function startTime(int $userId): array
+    public function startTime(Timer $timer): array
     {
+
+        $this->timeSheetValidation->validateTimer($timer);
+
         // Prevent timer to be started multiple times
-        if ($this->timeSheetRepository->findRunningTime($userId) !== []) {
+        if ($this->timeSheetRepository->findRunningTime($timer->getUserId()) !== []) {
             throw new TimerAlreadyStartedException('The timer is already running and can\'t be started again');
         }
-        $startTime = date('Y-m-d H:i:s');
-        $timer = [
-            'user_id' => $userId,
-            'start' => $startTime,
-        ];
+
+        $timer->setStart(date('Y-m-d H:i:s'));
 
         return [
-            'start_time' => $startTime,
-            'insert_id' => $this->timeSheetRepository->insertTime($timer)
+            'start_time' => $timer->getStart(),
+            'insert_id' => $this->timeSheetRepository->insertTime($timer->toArray())
         ];
     }
 
