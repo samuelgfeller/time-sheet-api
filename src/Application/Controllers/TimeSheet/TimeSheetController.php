@@ -143,6 +143,7 @@ class TimeSheetController extends Controller
             $responseData = [
                 'status' => 'error',
                 'message' => $timerNotStartedException->getMessage(),
+                'errCode' => 'timer_not_running',
             ];
             return $this->respondWithJson(
                 $response,
