@@ -36,6 +36,5 @@ return function (App $app) {
     );
 
     $app->add(CorsMiddleware::class);
-    $app->add(SessionMiddleware::class);
     $app->add(JsonBodyParserMiddleware::class);
 };

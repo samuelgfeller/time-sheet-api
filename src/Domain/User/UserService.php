@@ -116,7 +116,7 @@ class UserService
      */
     public function generateToken(User $user)
     {
-        $durationInSec = 500; // In seconds
+        $durationInSec = 5000; // In seconds
         $tokenId = base64_encode(random_bytes(32));
         $issuedAt = time();
         $notBefore = $issuedAt + 2;             //Adding 2 seconds
