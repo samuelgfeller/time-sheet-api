@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS `time-sheet`.`time_sheet` (
                                                          `user_id` INT NOT NULL,
                                                          `start` DATETIME NULL DEFAULT current_timestamp(),
                                                          `stop` DATETIME NULL DEFAULT NULL,
+                                                         `activity` VARCHAR(400) NULL DEFAULT NULL,
                                                          `deleted_at` DATETIME NULL DEFAULT NULL,
                                                          PRIMARY KEY (`id`),
                                                          INDEX `fk_time_sheet_user_idx` (`user_id` ASC),
