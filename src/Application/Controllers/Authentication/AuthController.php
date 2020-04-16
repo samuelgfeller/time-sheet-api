@@ -53,7 +53,7 @@ class AuthController extends Controller
                 }
 
                 if (null !== $insertId) {
-                    $this->logger->info('User "' . $user->getEmail() . '" created');
+                    $this->logger->info('User "' . $user->getEmail() . '" has been created');
 
                     return $this->respondWithJson(
                         $response,
