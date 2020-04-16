@@ -51,6 +51,7 @@ class UserValidation extends AppValidation
         // If the validation failed, throw the exception that will be caught in the Controller
         $this->throwOnError($validationResult);
 
+        $this->logger->info('Validation succeeded: User Update');
         return $validationResult;
     }
 
@@ -84,6 +85,7 @@ class UserValidation extends AppValidation
 
         // If the validation failed, throw the exception which will be caught in the Controller
         $this->throwOnError($validationResult);
+        $this->logger->info('Validation succeeded: User Registration');
 
         return $validationResult;
     }
@@ -105,6 +107,7 @@ class UserValidation extends AppValidation
 
         // If the validation failed, throw the exception which will be caught in the Controller
         $this->throwOnError($validationResult);
+        $this->logger->info('Validation succeeded: User Login');
 
         return $validationResult;
     }

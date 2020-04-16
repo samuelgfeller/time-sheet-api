@@ -30,6 +30,7 @@ abstract class AppValidation
     protected function throwOnError(ValidationResult $validationResult): void
     {
         if ($validationResult->fails()) {
+            $this->logger->notice('Validation failed: ' . $validationResult->getMessage()."\n".json_encode($validationResult->getErrors()));
             throw new ValidationException($validationResult);
         }
     }
