@@ -64,11 +64,12 @@ class TimeSheetController extends Controller
             if ($requestBody['requested_resource'] === 'running_timer') {
                 $runningTimer = $this->timeSheetService->findRunningTimer($userId);
 
-                // Only here for the presentation but useless since the value goes in a textarea in frontend where its not interpreted by the browser
-                // It causes that the escaped strings will be printed literally for e.g. "&" will be displayed "&amp"
-                $runningTimer = $this->outputEscapeService->escapeOneDimensionalArray($runningTimer);
-
                 if ($runningTimer !== null) {
+
+                    // Only here for the presentation but useless since the value goes in a textarea in frontend where its not interpreted by the browser
+                    // It causes that the escaped strings will be printed literally for e.g. "&" will be displayed "&amp"
+                    $runningTimer = $this->outputEscapeService->escapeOneDimensionalArray($runningTimer);
+
                     return $this->respondWithJson(
                         $response,
                         [
