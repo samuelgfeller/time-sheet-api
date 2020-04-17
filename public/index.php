@@ -1,18 +1,10 @@
 <?php
-// @todo remove that
 ini_set('xdebug.var_display_max_depth', '10');
 ini_set('xdebug.var_display_max_children', '256');
 ini_set('xdebug.var_display_max_data', '1024');
 
 use Slim\Factory\AppFactory;
 use DI\ContainerBuilder;
-
-// todo do I have to filter input data?
-// todo maybe put permission validation in a better place like UserValidation class?
-// todo login / calls via token jsfw
-// todo testing junit
-// todo translation
-// todo use frontend framework
 
 
 require __DIR__ . '/../vendor/autoload.php';
