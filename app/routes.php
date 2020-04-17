@@ -17,17 +17,6 @@ return function (App $app) {
     $app->options('/register', PreflightAction::class); // Allow preflight requests
     $app->post('/register', AuthController::class . ':register')->setName('auth.register');
 
-    $app->group('/users', function (RouteCollectorProxy $group) {
-        $group->options('', PreflightAction::class); // Allow preflight requests
-        $group->get('', UserController::class . ':list');
-        $group->post('', UserController::class . ':create');
-
-        $group->options('/{id:[0-9]+}', PreflightAction::class); // Allow preflight requests
-        $group->get('/{id:[0-9]+}', UserController::class . ':get');
-        $group->put('/{id:[0-9]+}', UserController::class . ':update');
-        $group->delete('/{id:[0-9]+}', UserController::class . ':delete');
-    });
-
     $app->group('/timers', function (RouteCollectorProxy $group) {
         $group->options('', PreflightAction::class);  // Allow preflight requests
         $group->get('', TimeSheetController::class . ':getTimer');
@@ -40,19 +29,6 @@ return function (App $app) {
         $group->put('/{id:[0-9]+}', TimeSheetController::class . ':update');
         $group->delete('/{id:[0-9]+}', TimeSheetController::class . ':delete');
     });
-
-    $app->get('/hello/{name}', function (Request $request, Response $response, array $args) {
-        $name = $args['name'];
-        $response->getBody()->write("Hello, $name");
-        $response->getBody()->write(json_encode($response->getStatusCode()));
-        throw new HttpInternalServerErrorException('Nooooooooooooooo!');
-        return $response;
-    });
-
-/*    $app->options('/{routes:.+}', function ($request, $response, $args) {
-        return $response;
-    });*/
-
 
     /**
      * Catch-all route to serve a 404 Not Found page if none of the routes match
