@@ -10,7 +10,7 @@ use Psr\Log\LoggerInterface;
  */
 abstract class AppValidation
 {
-    protected $logger;
+    protected LoggerInterface $logger;
 
     /**
      * AppValidation constructor.
@@ -64,31 +64,4 @@ abstract class AppValidation
             $validationResult->setError($fieldname, sprintf('Required maximum length is %s', $length));
         }
     }
-
-    /**
-     * Validate the users permission level.
-     *
-     * @param string $userId
-     * @param string $requiredPermissionLevel
-     * @param ValidationResult $validationResult
-     */
-/*    protected function validatePermissionLevel(string $userId, string $requiredPermissionLevel, ValidationResult $validationResult)
-    {
-        if ($this->hasPermissionLevel($userId, $requiredPermissionLevel)) {
-            $validationResult->setError('permission', __('You do not have the permission to execute this action'));
-        }
-    }*/
-
-    /**
-     * Check if the user has the right permission level.
-     *
-     * @param string $userId
-     * @param string $requiredPermissionLevel
-     * @return bool
-     */
-/*    protected function hasPermissionLevel(string $userId, string $requiredPermissionLevel)
-    {
-        $level = $this->userRepository->getUserPermissionLevel($userId);
-        return $level >= $requiredPermissionLevel;
-    }*/
 }

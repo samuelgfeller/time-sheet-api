@@ -23,12 +23,6 @@ class UserService
         $this->logger = $logger;
     }
     
-    public function findAllUsers()
-    {
-        $allUsers = $this->userRepository->findAllUsers();
-        return $allUsers;
-    }
-    
     public function findUser(int $id): array
     {
         return $this->userRepository->findUserById($id);
@@ -78,41 +72,11 @@ class UserService
     }
 
     /**
-     * @param User $user id MUST be in object
-     * @return bool
-     */
-    public function updateUser(User $user): bool
-    {
-
-        $this->userValidation->validateUserUpdate($user);
-
-        $userData = [];
-        if ($user->getName()!== null) {
-            $userData['name'] = $user->getName();
-        }
-        if ($user->getEmail() !== null) {
-            $userData['email'] = $user->getEmail();
-        }
-        if ($user->getPassword() !== null) {
-            // passwords are already identical since they were validated in UserValidation.php
-            $userData['password'] = password_hash($user->getPassword(), PASSWORD_DEFAULT);
-        }
-
-        return $this->userRepository->updateUser($userData, $user->getId());
-    }
-
-    public function deleteUser($id): bool
-    {
-        // todo delete posts
-        return $this->userRepository->deleteUser($id);
-    }
-
-    /**
      * Generates a JWT Token with user id
-     * todo move to jwt service
      *
      * @param User $user
      * @return string
+     * @throws \Exception
      */
     public function generateToken(User $user)
     {
@@ -133,7 +97,7 @@ class UserService
             ]
         ];
 
-        return JWT::encode($data, 'test', 'HS256'); // todo change test to settings
+        return JWT::encode($data, 'ipa-project', 'HS256');
 
 
     }

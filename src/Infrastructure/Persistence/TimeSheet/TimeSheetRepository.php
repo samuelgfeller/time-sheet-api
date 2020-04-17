@@ -25,31 +25,6 @@ class TimeSheetRepository extends DataManager
     {
         return $this->findAll();
     }
-    
-    /**
-     * Return post with given id if it exists
-     * otherwise null
-     *
-     * @param int $id
-     * @return array
-     */
-    public function findTimeSheetById(int $id): array
-    {
-        return $this->findById($id);
-    }
-    
-    /**
-     * Retrieve post from database
-     * If not found error is thrown
-     *
-     * @param int $id
-     * @return array
-     * @throws PersistenceRecordNotFoundException
-     */
-    public function getTimeSheetById(int $id): array
-    {
-        return $this->getById($id);
-    }
 
     /**
      * Return all posts which are linked to the given user
@@ -70,16 +45,6 @@ class TimeSheetRepository extends DataManager
      */
     public function insertTime(array $data): string {
         return $this->insert($data);
-    }
-    
-    /**
-     * Delete post from database
-     *
-     * @param int $id
-     * @return bool
-     */
-    public function deleteTimeSheet(int $id): bool {
-        return $this->delete($id);
     }
     
     /**

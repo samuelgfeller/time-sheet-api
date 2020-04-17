@@ -102,6 +102,8 @@ class TimeSheetService
     }
 
     /**
+     * Stop the time in database
+     *
      * @param $userId
      * @return bool
      * @throws TimerNotStartedException

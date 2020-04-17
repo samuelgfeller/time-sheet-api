@@ -2,22 +2,20 @@
 
 namespace App\Domain\TimeSheet;
 
-use App\Domain\Exception\ValidationException;
 use App\Domain\Timer\Timer;
 use App\Domain\Validation\AppValidation;
 use App\Domain\Validation\ValidationResult;
-use App\Infrastructure\Persistence\User\UserRepository;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class UserValidation
+ * Class TimeSheetValidation
  *
  * @package App\Service\Validation
  */
 class TimeSheetValidation extends AppValidation
 {
     /**
-     * UserValidation constructor.
+     * TimeSheetValidation constructor.
      *
      * @param LoggerInterface $logger
      */
@@ -28,7 +26,7 @@ class TimeSheetValidation extends AppValidation
 
 
     /**
-     * Validate updating the user.
+     * Validating timer
      *
      * @param Timer $timer
      * @return ValidationResult
