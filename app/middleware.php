@@ -18,7 +18,7 @@ return function (App $app) {
             [
                 //      'path' => '/api', /* or ["/api", "/admin"] */
                 'ignore' => ['/frontend', '/login', '/hello'],
-                'secret' => 'test',//$settings['settings']['jwt']['secret'],
+                'secret' => 'ipa-project',//$settings['settings']['jwt']['secret'],
                 'algorithm' => ['HS256'],
                 'logger' => $logger,
                 // HTTPS not mandatory for local development
