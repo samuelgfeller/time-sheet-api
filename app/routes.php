@@ -3,7 +3,6 @@
 use App\Application\Actions\PreflightAction;
 use App\Controller\AuthController;
 use App\Controllers\TimeSheet\TimeSheetController;
-use App\Controllers\User\UserController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;

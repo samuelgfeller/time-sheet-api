@@ -7,23 +7,18 @@ use App\Application\Controllers\Controller;
 use App\Domain\Exception\ValidationException;
 use App\Domain\User\User;
 use App\Domain\User\UserService;
-use App\Domain\User\UserValidation;
 use App\Domain\Utility\ArrayReader;
 use App\Infrastructure\Persistence\Exceptions\PersistenceRecordNotFoundException;
-use DateTime;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Log\LoggerInterface;
-use Firebase\JWT\JWT;
 
 /**
  * Class AuthController
  */
 class AuthController extends Controller
 {
-    protected $userService;
+    protected UserService $userService;
 
     public function __construct(LoggerInterface $logger, UserService $userService)
     {
@@ -31,6 +26,13 @@ class AuthController extends Controller
         $this->userService = $userService;
     }
 
+    /**
+     * Coordinating the creation of a new user
+     *
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
     public function register(Request $request, Response $response): Response
     {
         $loggedUserId = (int)$this->getUserIdFromToken($request);
@@ -40,7 +42,7 @@ class AuthController extends Controller
 
             if ($userRole === 'admin') {
                 // If a html form name changes, these changes have to be done in the Entities constructor
-                // too since these values will be the keys from the ArrayReader
+                // too since these names will be the keys from the ArrayReader
                 $userData = $request->getParsedBody();
 
                 // Use Entity instead of DTO for simplicity https://github.com/samuelgfeller/slim-api-example/issues/2#issuecomment-597245455
@@ -85,6 +87,13 @@ class AuthController extends Controller
         );
     }
 
+    /**
+     * Processes the user authentication
+     *
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
     public function login(Request $request, Response $response): Response
     {
         $userData = $request->getParsedBody();

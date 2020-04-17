@@ -35,25 +35,15 @@ class TimeSheetController extends Controller
         $this->outputEscapeService = $outputEscapeService;
     }
 
-    /*
-    // Commented out because unused. If I'd use it, it would be done approx like this. Not tested though.
-
-    public function get(Request $request, Response $response, array $args): Response
-        {
-            $timeSheetId = $args['id'];
-            $timeSheet = $this->timeSheetService->findTimeSheet($timeSheetId);
-
-            // Get user information connected to timeSheet
-            $user = $this->userService->findUser($timeSheet['user_id']);
-
-            // Add user name info to timeSheet
-            $timeSheetWithUser = $timeSheet;
-            $timeSheetWithUser['user_name'] = $user['name'];
-
-            $timeSheetWithUser = $this->outputEscapeService->escapeOneDimensionalArray($timeSheetWithUser);
-            return $this->respondWithJson($response, $timeSheetWithUser);
-        }*/
-
+    /**
+     * Returns an array either the values of a running timer
+     * or of all the timers depending of the 'requested_resource' value
+     *
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     */
     public function getTimer(Request $request, Response $response, array $args)
     {
         $userId = (int)$this->getUserIdFromToken($request);
@@ -122,6 +112,14 @@ class TimeSheetController extends Controller
         );
     }
 
+    /**
+     * Starts a timer
+     *
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     */
     public function startTime(Request $request, Response $response, array $args): Response
     {
         $timerData = $request->getParsedBody();
@@ -158,6 +156,14 @@ class TimeSheetController extends Controller
         return $response->withAddedHeader('Warning', 'The timer could not be created');
     }
 
+    /**
+     * Stops the timer
+     *
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     */
     public function stopTime(Request $request, Response $response, array $args): Response
     {
         $userId = (int)$this->getUserIdFromToken($request);
