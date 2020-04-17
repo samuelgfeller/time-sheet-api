@@ -4,7 +4,6 @@ ini_set('xdebug.var_display_max_depth', '10');
 ini_set('xdebug.var_display_max_children', '256');
 ini_set('xdebug.var_display_max_data', '1024');
 
-use App\Application\Error\HtmlErrorRenderer;
 use Slim\Factory\AppFactory;
 use DI\ContainerBuilder;
 
@@ -86,10 +85,7 @@ $routes($app);
  * Note: This middleware should be added last. It will not handle any exceptions/errors
  * for middleware added after it.
  */
-// todo add custom error_log http://www.slimframework.com/docs/v4/middleware/error-handling.html
-
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 $errorHandler = $errorMiddleware->getDefaultErrorHandler();
-//$errorHandler->registerErrorRenderer('text/html', HtmlErrorRenderer::class);
 
 $app->run();
