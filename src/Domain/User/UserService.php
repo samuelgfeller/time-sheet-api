@@ -10,19 +10,19 @@ use Psr\Log\LoggerInterface;
 
 class UserService
 {
-    
+
     private UserRepository $userRepository;
     protected UserValidation $userValidation;
     protected LoggerInterface $logger;
 
-    
-    public function __construct(UserRepository $userRepository, UserValidation $userValidation,LoggerInterface $logger)
+
+    public function __construct(UserRepository $userRepository, UserValidation $userValidation, LoggerInterface $logger)
     {
         $this->userRepository = $userRepository;
         $this->userValidation = $userValidation;
         $this->logger = $logger;
     }
-    
+
     public function findUser(int $id): array
     {
         return $this->userRepository->findUserById($id);
@@ -32,11 +32,11 @@ class UserService
      * @param string $email
      * @return array|null
      */
-    public function findUserByEmail(string $email):? array
+    public function findUserByEmail(string $email): ?array
     {
         return $this->userRepository->findUserByEmail($email);
     }
-    
+
     /**
      * Insert user in database
      *
@@ -64,7 +64,7 @@ class UserService
 
         $dbUser = $this->findUserByEmail($user->getEmail());
         //$this->logger->info('users/' . $user . ' has been called');
-        if($dbUser !== null && $dbUser !== [] && password_verify($user->getPassword(), $dbUser['password'])){
+        if ($dbUser !== null && $dbUser !== [] && password_verify($user->getPassword(), $dbUser['password'])) {
             $user->setId($dbUser['id']);
             return $user;
         }
@@ -98,8 +98,6 @@ class UserService
         ];
 
         return JWT::encode($data, 'ipa-project', 'HS256');
-
-
     }
 
     /**
@@ -113,5 +111,5 @@ class UserService
     {
         return $this->userRepository->getUserRole($id);
     }
-    
+
 }

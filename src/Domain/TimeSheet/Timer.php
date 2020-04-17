@@ -13,7 +13,8 @@ class Timer
     private ?string $stop;
     private ?string $activity;
 
-    public function __construct(ArrayReader $arrayReader) {
+    public function __construct(ArrayReader $arrayReader)
+    {
         $this->id = $arrayReader->findInt('id');
         $this->userId = $arrayReader->findInt('user_id');
         $this->start = $arrayReader->findString('start');
@@ -33,11 +34,21 @@ class Timer
     {
         $timeSheet = [];
 
-        if($this->id !== null){ $timeSheet['id'] = $this->id;}
-        if($this->userId !== null){ $timeSheet['user_id'] = $this->userId;}
-        if($this->start !== null){ $timeSheet['start'] = $this->start;}
-        if($this->stop !== null){ $timeSheet['stop'] = $this->stop;}
-        if($this->activity !== null){ $timeSheet['activity'] = $this->activity;}
+        if ($this->id !== null) {
+            $timeSheet['id'] = $this->id;
+        }
+        if ($this->userId !== null) {
+            $timeSheet['user_id'] = $this->userId;
+        }
+        if ($this->start !== null) {
+            $timeSheet['start'] = $this->start;
+        }
+        if ($this->stop !== null) {
+            $timeSheet['stop'] = $this->stop;
+        }
+        if ($this->activity !== null) {
+            $timeSheet['activity'] = $this->activity;
+        }
 
         return $timeSheet;
     }
@@ -121,7 +132,6 @@ class Timer
     {
         $this->activity = $activity;
     }
-
 
 
 }

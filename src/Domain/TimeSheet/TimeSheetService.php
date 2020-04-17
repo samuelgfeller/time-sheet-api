@@ -48,7 +48,7 @@ class TimeSheetService
     public function findRunningTimer($userId): ?array
     {
         $runningTime = $this->timeSheetRepository->findRunningTime($userId);
-        if ($runningTime !== []){
+        if ($runningTime !== []) {
             return $runningTime;
         }
         // If no timer is running it's not an exception, not an error
@@ -85,7 +85,6 @@ class TimeSheetService
      */
     public function startTime(Timer $timer): array
     {
-
         $this->timeSheetValidation->validateTimer($timer);
 
         // Prevent timer to be started multiple times
@@ -111,8 +110,8 @@ class TimeSheetService
     public function stopTime($userId)
     {
         $runningTime = $this->timeSheetRepository->findRunningTime($userId);
-        if ($runningTime !== []){
-            return $this->timeSheetRepository->updateTime(['stop' => date('Y-m-d H:i:s')],$runningTime['id']);
+        if ($runningTime !== []) {
+            return $this->timeSheetRepository->updateTime(['stop' => date('Y-m-d H:i:s')], $runningTime['id']);
         }
 
         throw new TimerNotStartedException('Unable to stop time because no timer is running');

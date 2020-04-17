@@ -31,9 +31,9 @@ final class ArrayReader
      * @param string $key The key
      * @param int|null $default The default value
      *
+     * @return int The value
      * @throws InvalidArgumentException
      *
-     * @return int The value
      */
     public function getInt(string $key, int $default = null): int
     {
@@ -71,9 +71,9 @@ final class ArrayReader
      * @param string $key The key
      * @param string|null $default The default value
      *
+     * @return string The value
      * @throws InvalidArgumentException
      *
-     * @return string The value
      */
     public function getString(string $key, string $default = null): string
     {
@@ -111,9 +111,9 @@ final class ArrayReader
      * @param string $key The key
      * @param array|null $default The default value
      *
+     * @return array The value
      * @throws InvalidArgumentException
      *
-     * @return array The value
      */
     public function getArray(string $key, array $default = null): array
     {
@@ -151,9 +151,9 @@ final class ArrayReader
      * @param string $key The key
      * @param float|null $default The default value
      *
+     * @return float The value
      * @throws InvalidArgumentException
      *
-     * @return float The value
      */
     public function getFloat(string $key, float $default = null): float
     {
@@ -191,9 +191,9 @@ final class ArrayReader
      * @param string $key The key
      * @param bool|null $default The default value
      *
+     * @return bool The value
      * @throws InvalidArgumentException
      *
-     * @return bool The value
      */
     public function getBool(string $key, bool $default = null): bool
     {

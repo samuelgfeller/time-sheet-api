@@ -55,7 +55,6 @@ class TimeSheetController extends Controller
                 $runningTimer = $this->timeSheetService->findRunningTimer($userId);
 
                 if ($runningTimer !== null) {
-
                     // Only here for the presentation but useless since the value goes in a textarea in frontend where its not interpreted by the browser
                     // It causes that the escaped strings will be printed literally for e.g. "&" will be displayed "&amp"
                     $runningTimer = $this->outputEscapeService->escapeOneDimensionalArray($runningTimer);
@@ -89,7 +88,7 @@ class TimeSheetController extends Controller
                         return $this->respondWithJson($response, $timeSheetsWithUsers);
                     }
                 } catch (PersistenceRecordNotFoundException $e) {
-                  // If userRole is not found
+                    // If userRole is not found
                     $responseData = [
                         'status' => 'error',
                         'message' => $e->getMessage(),

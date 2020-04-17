@@ -12,8 +12,8 @@ class User
     private ?string $password;
     private ?string $password2;
     private ?string $role;
-    
-    
+
+
     public function __construct(ArrayReader $arrayReader)
     {
         // These keys have to math the input key for the ArrayReader
@@ -24,8 +24,8 @@ class User
         $this->password2 = $arrayReader->findString('password2');
         $this->role = $arrayReader->findString('role') ?? 'user';
     }
-    
-    
+
+
     /**
      * Returns all values of object as array.
      * The array keys should match with the database
@@ -44,7 +44,7 @@ class User
             'role' => $this->role,
         ];
     }
-    
+
     /**
      * @return int|mixed|null
      */
@@ -52,7 +52,7 @@ class User
     {
         return $this->id;
     }
-    
+
     /**
      * @param int|mixed|null $id
      */
@@ -60,7 +60,7 @@ class User
     {
         $this->id = $id;
     }
-    
+
     /**
      * @return mixed|string|null
      */
@@ -68,7 +68,7 @@ class User
     {
         return $this->name;
     }
-    
+
     /**
      * @param mixed|string|null $name
      */
@@ -76,7 +76,7 @@ class User
     {
         $this->name = $name;
     }
-    
+
     /**
      * @return mixed|string|null
      */
@@ -84,7 +84,7 @@ class User
     {
         return $this->email;
     }
-    
+
     /**
      * @param mixed|string|null $email
      */
@@ -92,7 +92,7 @@ class User
     {
         $this->email = $email;
     }
-    
+
     /**
      * @return mixed|string|null
      */
@@ -100,7 +100,7 @@ class User
     {
         return $this->password;
     }
-    
+
     /**
      * @param mixed|string|null $password
      */
@@ -124,7 +124,7 @@ class User
     {
         $this->password2 = $password2;
     }
-    
+
     /**
      * @return mixed|string|null
      */
@@ -132,7 +132,7 @@ class User
     {
         return $this->role;
     }
-    
+
     /**
      * @param mixed|string|null $role
      */
@@ -140,6 +140,6 @@ class User
     {
         $this->role = $role;
     }
-    
-    
+
+
 }

@@ -83,9 +83,11 @@ class ValidationResult
      * @param string $field
      * @param string $message
      */
-    public function setIsBadRequest(bool $isBadRequest, string $field = 'unknown',
-        string $message = 'Required request parameter empty or not formatted well'): void
-    {
+    public function setIsBadRequest(
+        bool $isBadRequest,
+        string $field = 'unknown',
+        string $message = 'Required request parameter empty or not formatted well'
+    ): void {
         $this->setError($field, $message);
         $this->isBadRequest = $isBadRequest;
     }
@@ -95,7 +97,7 @@ class ValidationResult
      */
     public function getStatusCode(): int
     {
-        if ($this->isBadRequest()){
+        if ($this->isBadRequest()) {
             return 400;
         }
 

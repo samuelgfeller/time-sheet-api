@@ -20,7 +20,7 @@ abstract class AppValidation
     {
         $this->logger = $logger;
     }
-    
+
     /**
      * Throw a validation exception if the validation result fails.
      *
@@ -30,11 +30,15 @@ abstract class AppValidation
     protected function throwOnError(ValidationResult $validationResult): void
     {
         if ($validationResult->fails()) {
-            $this->logger->notice('Validation failed: ' . $validationResult->getMessage()."\n".json_encode($validationResult->getErrors()));
+            $this->logger->notice(
+                'Validation failed: ' . $validationResult->getMessage() . "\n" . json_encode(
+                    $validationResult->getErrors()
+                )
+            );
             throw new ValidationException($validationResult);
         }
     }
-    
+
     /**
      * Check if a values string is less than a defined value.
      *

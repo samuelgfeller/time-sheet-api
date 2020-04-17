@@ -39,7 +39,7 @@ class TimeSheetValidation extends AppValidation
 
         // If the validation failed, throw the exception that will be caught in the Controller
         $this->throwOnError($validationResult);
-        $this->logger->info('Timer validation succeeded. "'.$timer->getActivity().'" is valid');
+        $this->logger->info('Timer validation succeeded. "' . $timer->getActivity() . '" is valid');
         return $validationResult;
     }
 }

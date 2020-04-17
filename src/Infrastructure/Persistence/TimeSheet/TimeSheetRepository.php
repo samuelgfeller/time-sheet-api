@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\TimeSheet;
@@ -43,10 +44,11 @@ class TimeSheetRepository extends DataManager
      * @param array $data
      * @return string lastInsertId
      */
-    public function insertTime(array $data): string {
+    public function insertTime(array $data): string
+    {
         return $this->insert($data);
     }
-    
+
     /**
      * Update values from post
      * Example of $data: ['name' => 'New name']
@@ -55,7 +57,8 @@ class TimeSheetRepository extends DataManager
      * @param array $data
      * @return bool
      */
-    public function updateTime(array $data,int $id): bool {
+    public function updateTime(array $data, int $id): bool
+    {
         return $this->update($data, $id);
     }
 }

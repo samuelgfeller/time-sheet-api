@@ -27,7 +27,7 @@ class OutputEscapeService
     public function escapeOneDimensionalArray(array $array)
     {
         $escapedArr = [];
-        foreach ($array as $key => $value){
+        foreach ($array as $key => $value) {
             $escapedArr[$key] = $this->escapeValue($value);
         }
         return $escapedArr;
@@ -42,7 +42,7 @@ class OutputEscapeService
     public function escapeTwoDimensionalArray(array $twoDArr)
     {
         $escapedArr = [];
-        foreach ($twoDArr as $key => $array){
+        foreach ($twoDArr as $key => $array) {
             $escapedArr[$key] = $this->escapeOneDimensionalArray($array);
         }
         return $escapedArr;
@@ -57,7 +57,7 @@ class OutputEscapeService
     public function escapeThreeDimensionalArray(array $threeDArr)
     {
         $escapedArr = [];
-        foreach ($threeDArr as $key => $twoDArr){
+        foreach ($threeDArr as $key => $twoDArr) {
             $escapedArr[$key] = $this->escapeTwoDimensionalArray($twoDArr);
         }
         return $escapedArr;

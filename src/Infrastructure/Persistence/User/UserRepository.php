@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\User;
@@ -27,7 +28,7 @@ class UserRepository extends DataManager
      */
     public function findUserById(int $id): array
     {
-        return $this->findById($id,$this->fields);
+        return $this->findById($id, $this->fields);
     }
 
     /**
@@ -39,7 +40,7 @@ class UserRepository extends DataManager
      */
     public function findUserByEmail(?string $email): ?array
     {
-        return $this->findOneBy(['email' => $email],['id','email','password']);
+        return $this->findOneBy(['email' => $email], ['id', 'email', 'password']);
     }
 
     /**
@@ -48,7 +49,8 @@ class UserRepository extends DataManager
      * @param array $data
      * @return string lastInsertId
      */
-    public function insertUser(array $data): string {
+    public function insertUser(array $data): string
+    {
         return $this->insert($data);
     }
 
@@ -59,7 +61,8 @@ class UserRepository extends DataManager
      * @return string
      * @throws PersistenceRecordNotFoundException
      */
-    public function getUserRole(int $id) : string{
-        return $this->getById($id,['role'])['role'];
+    public function getUserRole(int $id): string
+    {
+        return $this->getById($id, ['role'])['role'];
     }
 }
