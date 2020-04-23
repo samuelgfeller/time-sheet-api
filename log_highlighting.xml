@@ -13,5 +13,6 @@
     </parsingPatterns>
     <settingsVersion>4</settingsVersion>
     <lastAddedDefaultFormat>3</lastAddedDefaultFormat>
+    <readonlySizeThreshold>1000</readonlySizeThreshold>
   </component>
 </application>
